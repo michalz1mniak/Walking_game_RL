@@ -4,7 +4,7 @@
 
 ## Overview
 
-This project contains a 2D physics-based game developed using **Pygame** and **Pymunk**, where the player controls a humanoid character with four limbs. The game has been adapted to serve as a custom environment for reinforcement learning (RL). The goal is to make the character move forward without falling (especially avoiding head collisions with the ground).
+This project contains a 2D physics-based game developed using **Pygame** and **Pymunk**, where the player controls a humanoid character with four limbs. The game has been adapted to serve as a custom environment for reinforcement learning (RL). The goal is to make the character move forward without falling (especially avoiding head collisions with the ground). This reinforcement learning environment is built upon the game logic and physics from a separate repository, available [here](https://github.com/michalz1mniak/Walking_game_RL).
 
 ## Features
 
