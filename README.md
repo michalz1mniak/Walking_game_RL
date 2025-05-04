@@ -34,4 +34,4 @@ The environment returns a vector of physical states including positions and velo
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](LICENSE).
