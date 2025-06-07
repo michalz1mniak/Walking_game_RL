@@ -11,7 +11,7 @@ class GameEnv(gym.Env):
         self.did_fall = False
 
         self.action_space = gym.spaces.Discrete(8)
-        self.observation_space = gym.spaces.Box(low = 0, high = 10000 ,shape=(12,), dtype = np.float32)
+        self.observation_space = gym.spaces.Box(low = 0, high = 10000 ,shape=(6,), dtype = np.float32)
 
         pygame.init()
         self.screen = pygame.display.set_mode((1280, 720))
@@ -23,31 +23,26 @@ class GameEnv(gym.Env):
         return True
     
     def _get_obs(self):
-        headx = self.player.head_body.position[0]
         heady = self.player.head_body.position[1]
 
-        torsox = self.player.torso_body.position[0]
         torsoy = self.player.torso_body.position[1]
 
-        left_armx = self.player.left_arm_body.position[0]
         left_army = self.player.left_arm_body.position[1]
 
-        right_armx = self.player.right_arm_body.position[0]
         right_army = self.player.right_arm_body.position[1]
 
-        left_legx = self.player.left_leg_body.position[0]
         left_legy = self.player.left_leg_body.position[1]
 
-        right_legx = self.player.right_leg_body.position[0]
         right_legy = self.player.right_leg_body.position[1]
 
-        self.observation = [headx, heady, torsox, torsoy, left_armx, left_army, right_armx, right_army, left_legx, left_legy, right_legx, right_legy]
+        self.observation = [heady, torsoy, left_army, right_army, left_legy, right_legy]
         
         return self.observation
         
     def reset(self, seed = None, options = None):
         self.done = False
-            
+        self.did_fall = False
+
         self.space = pymunk.Space()
         self.space.gravity = (0,900)
         self.handler = self.space.add_collision_handler(1,2)
@@ -106,17 +101,20 @@ class GameEnv(gym.Env):
 
         self.space.step(1/50)
 
-        self.new = int(self.player.head_body.position[0])
+        self.newx = int(self.player.head_body.position[0])
 
         self.reward  = 0
 
-        if self.prev > self.new: self.reward = -10
-        else: self.reward = 0.1
+        if self.prev > self.newx: self.reward -= 10
+        else: self.reward += 1
 
         if self.did_fall:
-            self.reward = -1000
+            self.reward -= 1000
         
-        if self.new > 3200:
+        if self.player.head_body.position[1] > 600:
+            self.reward -= 10
+
+        if self.newx > 3200:
             self.done = True
 
         return self._get_obs(), self.reward, self.done, False, {}

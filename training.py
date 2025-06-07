@@ -16,11 +16,13 @@ env.reset()
 model = PPO("MlpPolicy", env, verbose=1, tensorboard_log=log_dir)
 
 timesteps = 1000
+gen = 1
 
 while True:
-    gen = 1
+    
     model.learn(total_timesteps=timesteps, reset_num_timesteps=False)
     model.save(f'{models_dir}/gen{gen}')
+    gen+=1
 
 
 
