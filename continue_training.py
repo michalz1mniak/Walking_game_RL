@@ -1,5 +1,5 @@
 import os
-from stable_baselines3 import PPO
+from stable_baselines3 import A2C
 from game_env import GameEnv
 
 models_dir = 'models'
@@ -13,12 +13,12 @@ if not os.path.exists(log_dir):
 
 env = GameEnv()
 env.reset()
-model = PPO.load('models/first', env)
+model = A2C.load('models/200000.zip', env)
 
-timesteps = 1000
-gen = 1
+timesteps = 100000
+gen = 3
 
 while True:
     model.learn(total_timesteps=timesteps, reset_num_timesteps=False)
-    model.save(f'{models_dir}/first{gen}')
+    model.save(f'{models_dir}/{gen*timesteps}')
     gen+=1

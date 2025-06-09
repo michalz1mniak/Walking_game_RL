@@ -6,20 +6,20 @@ from game_files.ground import Walls
 
 class GameEnv(gym.Env):
     def __init__(self):
+        self.done = False
+
         super().__init__()
         self.move_motor = 40
-        self.did_fall = False
 
         self.action_space = gym.spaces.Discrete(8)
         self.observation_space = gym.spaces.Box(low = 0, high = 10000 ,shape=(6,), dtype = np.float32)
 
-        pygame.init()
-        self.screen = pygame.display.set_mode((1280, 720))
-        self.clock = pygame.time.Clock()
+        # pygame.init()
+        # self.screen = pygame.display.set_mode((1280, 720))
+        # self.clock = pygame.time.Clock()
 
     def _collision(self,a,s,d):
-        self.done = True
-        self.did_fall = True
+        #self.done = True
         return True
     
     def _get_obs(self):
@@ -41,7 +41,6 @@ class GameEnv(gym.Env):
         
     def reset(self, seed = None, options = None):
         self.done = False
-        self.did_fall = False
 
         self.space = pymunk.Space()
         self.space.gravity = (0,900)
@@ -86,38 +85,31 @@ class GameEnv(gym.Env):
             self.player.torso_right_leg_motor.rate = 0
     
     def step(self, action):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                exit()
-        self.screen.fill((255,255,255))
-        self.walls.draw(screen= self.screen, offset = (0,0))
-        self.player.draw_all(screen = self.screen, offset=(0,0))
-        pygame.display.flip()
-        self.clock.tick(60)
-        
-        self.prev = int(self.player.head_body.position[0])
+        # for event in pygame.event.get():
+        #     if event.type == pygame.QUIT:
+        #         exit()
+        # self.screen.fill((255,255,255))
+        # self.walls.draw(screen= self.screen, offset = (0,0))
+        # self.player.draw_all(screen = self.screen, offset=(0,0))
+        # pygame.display.flip()
+        # self.clock.tick(60)
+
+        prev = int(self.player.head_body.position[0])
 
         self._apply_action(action)
 
         self.space.step(1/50)
 
-        self.newx = int(self.player.head_body.position[0])
+        new = int(self.player.head_body.position[0])
 
-        self.reward  = 0
+        reward  = 0
 
-        if self.prev > self.newx: self.reward -= 10
-        else: self.reward += 1
+        reward += new - prev
 
-        if self.did_fall:
-            self.reward -= 1000
-        
-        if self.player.head_body.position[1] > 600:
-            self.reward -= 10
-
-        if self.newx > 3200:
+        if new > 1300:
             self.done = True
 
-        return self._get_obs(), self.reward, self.done, False, {}
+        return self._get_obs(), reward, self.done, False, {}
     
 
 
