@@ -13,7 +13,7 @@ if not os.path.exists(log_dir):
 
 env = GameEnv()
 env.reset()
-model = A2C.load('models/200000.zip', env)
+model = A2C.load('models/.zip', env)
 
 timesteps = 100000
 gen = 3
