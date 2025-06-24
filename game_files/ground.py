@@ -15,7 +15,7 @@ class Walls():
         self.left_wall_shape.friction = 1
 
         self.right_wall_body = pymunk.Body(body_type=pymunk.Body.STATIC)
-        self.right_wall_body.position = 3700, 0
+        self.right_wall_body.position = 1280, 0
         self.right_wall_shape = pymunk.Poly.create_box(self.right_wall_body, (60, 1500))
         self.right_wall_shape.friction = 1
 

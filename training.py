@@ -1,8 +1,8 @@
 import os
-from stable_baselines3 import A2C
+from stable_baselines3 import PPO
 from game_env import GameEnv
 
-models_dir = 'models'
+models_dir = 'modelsppo0'
 log_dir = 'logs'
 
 if not os.path.exists(models_dir):
@@ -13,7 +13,7 @@ if not os.path.exists(log_dir):
 
 env = GameEnv()
 env.reset()
-model = A2C("MlpPolicy", env, verbose=1, tensorboard_log=log_dir)
+model = PPO("MlpPolicy", env, verbose=1, tensorboard_log=log_dir)
 
 timesteps = 10000
 gen = 1

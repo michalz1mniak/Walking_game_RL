@@ -1,8 +1,8 @@
 import os
-from stable_baselines3 import A2C
+from stable_baselines3 import PPO
 from game_env import GameEnv
 
-models_dir = 'models'
+models_dir = 'modelsppo0'
 log_dir = 'logs'
 
 if not os.path.exists(models_dir):
@@ -13,10 +13,10 @@ if not os.path.exists(log_dir):
 
 env = GameEnv()
 env.reset()
-model = A2C.load('models/.zip', env)
+model = PPO.load('modelsppo0/34900000.zip', env)
 
-timesteps = 100000
-gen = 3
+timesteps = 10000
+gen = 3532
 
 while True:
     model.learn(total_timesteps=timesteps, reset_num_timesteps=False)

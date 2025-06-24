@@ -1,14 +1,14 @@
 import gymnasium as gym
-from stable_baselines3 import A2C
+from stable_baselines3 import PPO
 from game_env import GameEnv
 
-env = GameEnv()
+env = GameEnv(render=True)
 env.reset()
 
-models_dir = models_dir = 'models'
-model_path = f'{models_dir}/.zip'
+models_dir = models_dir = 'modelsppo0'
+model_path = f'{models_dir}/42090000.zip'
 
-model = A2C.load(model_path, env=env)
+model = PPO.load(model_path, env=env)
 
 episodes = 10
 
